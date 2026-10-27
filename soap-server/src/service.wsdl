@@ -13,11 +13,22 @@
     <message name="AddResponse">
         <part name="result" type="xsd:double"/>
     </message>
+    <message name="SubtractRequest">
+        <part name="a" type="xsd:double"/>
+        <part name="b" type="xsd:double"/>
+    </message>
+    <message name="SubtractResponse">
+        <part name="result" type="xsd:double"/>
+    </message>
 
     <portType name="CalculatorPortType">
         <operation name="Add">
             <input message="tns:AddRequest"/>
             <output message="tns:AddResponse"/>
+        </operation>
+        <operation name="Subtract">
+            <input message="tns:SubtractRequest"/>
+            <output message="tns:SubtractResponse"/>
         </operation>
     </portType>
 
@@ -25,6 +36,11 @@
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
         <operation name="Add">
             <soap:operation soapAction="Add"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+        <operation name="Subtract">
+            <soap:operation soapAction="Subtract"/>
             <input><soap:body use="literal"/></input>
             <output><soap:body use="literal"/></output>
         </operation>

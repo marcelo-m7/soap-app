@@ -28,6 +28,7 @@ const myService = {
   CalculatorService: {
     CalculatorPort: {
       Add: (args: Arguments) => calculate(args, (a, b) => a + b),
+      Subtract: (args: Arguments) => calculate(args, (a, b) => a - b),
     },
   },
 };
