@@ -16,3 +16,18 @@ services:
       BUN_PUBLIC_SOAP_URL: http://localhost:3000/wsdl
     ports:
       - "3001:3001"
+
+  soapui:
+    build:
+      context: .
+      target: soapui
+    depends_on:
+      - soap-server
+    shm_size: "1gb"
+    ports:
+      - "127.0.0.1:8080:3001"
+    volumes:
+      - soapui-config:/config
+
+volumes:
+  soapui-config:
