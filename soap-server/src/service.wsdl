@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CalculatorService"
+             targetNamespace="http://example.org"
+             xmlns="http://xmlsoap.org"
+             xmlns:soap="http://xmlsoap.orgsoap/"
+             xmlns:tns="http://example.org"
+             xmlns:xsd="http://w3.org">
+
+    <message name="SumRequest">
+        <part name="a" type="xsd:int"/>
+        <part name="b" type="xsd:int"/>
+    </message>
+    <message name="SumResponse">
+        <part name="result" type="xsd:int"/>
+    </message>
+
+    <portType name="CalculatorPortType">
+        <operation name="Sum">
+            <input message="tns:SumRequest"/>
+            <output message="tns:SumResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="CalculatorBinding" type="tns:CalculatorPortType">
+        <soap:binding style="rpc" transport="http://xmlsoap.org"/>
+        <operation name="Sum">
+            <soap:operation soapAction="Sum"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+
+    <service name="CalculatorService">
+        <port name="CalculatorPort" binding="tns:CalculatorBinding">
+            <soap:address location="http://localhost:3000/wsdl"/>
+        </port>
+    </service>
+</definitions>
