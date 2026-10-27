@@ -11,5 +11,8 @@
   },
   "peerDependencies": {
     "typescript": "^7"
+  },
+  "dependencies": {
+    "soap": "^1.14.0"
   }
 }
