@@ -2,16 +2,32 @@ import http from 'node:http';
 import fs from 'node:fs';
 import soap from 'soap';
 
+type Arguments = { a?: unknown; b?: unknown };
+
+const fault = (message: string) => ({
+  Fault: { faultcode: 'Client', faultstring: message, statusCode: 500 },
+});
+
+async function calculate(args: Arguments, operation: (a: number, b: number) => number) {
+  const values = [args?.a, args?.b];
+  if (values.some((value) => value === undefined || value === null || String(value).trim() === '')) {
+    throw fault('a e b devem ser numeros finitos');
+  }
+
+  const a = Number(args.a);
+  const b = Number(args.b);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) {
+    throw fault('a e b devem ser numeros finitos');
+  }
+
+  return { result: operation(a, b) };
+}
+
 // 1. Definir a lógica do serviço (implementação das funções do WSDL)
 const myService = {
   CalculatorService: {
     CalculatorPort: {
-      Sum: function (args: { a: number; b: number }) {
-        const resultado = Number(args.a) + Number(args.b);
-        return {
-          result: resultado,
-        };
-      },
+      Add: (args: Arguments) => calculate(args, (a, b) => a + b),
     },
   },
 };

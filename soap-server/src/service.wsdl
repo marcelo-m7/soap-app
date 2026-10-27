@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions name="CalculatorService"
              targetNamespace="http://example.org"
-             xmlns="http://xmlsoap.org"
-             xmlns:soap="http://xmlsoap.orgsoap/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
              xmlns:tns="http://example.org"
-             xmlns:xsd="http://w3.org">
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
-    <message name="SumRequest">
-        <part name="a" type="xsd:int"/>
-        <part name="b" type="xsd:int"/>
+    <message name="AddRequest">
+        <part name="a" type="xsd:double"/>
+        <part name="b" type="xsd:double"/>
     </message>
-    <message name="SumResponse">
-        <part name="result" type="xsd:int"/>
+    <message name="AddResponse">
+        <part name="result" type="xsd:double"/>
     </message>
 
     <portType name="CalculatorPortType">
-        <operation name="Sum">
-            <input message="tns:SumRequest"/>
-            <output message="tns:SumResponse"/>
+        <operation name="Add">
+            <input message="tns:AddRequest"/>
+            <output message="tns:AddResponse"/>
         </operation>
     </portType>
 
     <binding name="CalculatorBinding" type="tns:CalculatorPortType">
-        <soap:binding style="rpc" transport="http://xmlsoap.org"/>
-        <operation name="Sum">
-            <soap:operation soapAction="Sum"/>
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="Add">
+            <soap:operation soapAction="Add"/>
             <input><soap:body use="literal"/></input>
             <output><soap:body use="literal"/></output>
         </operation>
