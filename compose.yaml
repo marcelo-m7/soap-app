@@ -1,0 +1,18 @@
+services:
+  soap-server:
+    build:
+      context: .
+      target: backend
+    ports:
+      - "3000:3000"
+
+  soap-app:
+    build:
+      context: .
+      target: frontend
+    depends_on:
+      - soap-server
+    environment:
+      BUN_PUBLIC_SOAP_URL: http://localhost:3000/wsdl
+    ports:
+      - "3001:3001"
