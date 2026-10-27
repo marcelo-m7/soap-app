@@ -20,7 +20,11 @@ async function calculate(args: Arguments, operation: (a: number, b: number) => n
     throw fault('a e b devem ser numeros finitos');
   }
 
-  return { result: operation(a, b) };
+  const result = operation(a, b);
+  if (!Number.isFinite(result)) {
+    throw fault('resultado fora do intervalo numerico');
+  }
+  return { result };
 }
 
 // 1. Definir a lógica do serviço (implementação das funções do WSDL)
@@ -30,6 +34,12 @@ const myService = {
       Add: (args: Arguments) => calculate(args, (a, b) => a + b),
       Subtract: (args: Arguments) => calculate(args, (a, b) => a - b),
       Multiply: (args: Arguments) => calculate(args, (a, b) => a * b),
+      Divide: (args: Arguments) => calculate(args, (a, b) => {
+        if (b === 0) {
+          throw fault('divisao por zero');
+        }
+        return a / b;
+      }),
     },
   },
 };
