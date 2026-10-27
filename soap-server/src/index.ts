@@ -45,7 +45,9 @@ const myService = {
 };
 
 // 2. Ler o arquivo WSDL
-const wsdl = fs.readFileSync('src/service.wsdl', 'utf8');
+const port = Number(process.env.SOAP_PORT || 3000);
+const wsdl = fs.readFileSync('src/service.wsdl', 'utf8')
+  .replace('http://localhost:3000/wsdl', `http://localhost:${port}/wsdl`);
 
 // 3. Criar o servidor HTTP nativo (compatibilidade Node no Bun)
 const server = http.createServer(function (request, response) {
@@ -53,9 +55,23 @@ const server = http.createServer(function (request, response) {
 });
 
 // 4. Iniciar o servidor SOAP acoplado ao HTTP
-const port = 3000;
 server.listen(port, () => {
-  soap.listen(server, '/wsdl', myService, wsdl, function () {
+  const soapServer = soap.listen(server, '/wsdl', myService, wsdl, function () {
     console.log(`🚀 Servidor SOAP rodando em http://localhost:${port}/wsdl?wsdl`);
   });
+  soapServer.authorizeConnection = (request, response) => {
+    if (!response) return true;
+    const allowedOrigin = process.env.SOAP_ALLOWED_ORIGIN || 'http://localhost:3001';
+    if (request.headers.origin === allowedOrigin) {
+      response.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+      response.setHeader('Vary', 'Origin');
+      response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      response.setHeader('Access-Control-Allow-Headers', 'Content-Type, SOAPAction');
+    }
+    if (request.method === 'OPTIONS') {
+      response.writeHead(204);
+      return false;
+    }
+    return true;
+  };
 });
