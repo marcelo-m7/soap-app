@@ -1,47 +1,26 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useEffect, useState } from "react";
 import { APITester } from "./APITester";
+import { getSoapUrl } from "./service";
 import "./index.css";
 
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
-
 export function App() {
+  const [soapUrl, setSoapUrl] = useState("");
+
+  useEffect(() => {
+    getSoapUrl().then(setSoapUrl).catch(() => setSoapUrl(""));
+  }, []);
+
   return (
-    <div className="container mx-auto p-8 text-center relative z-10">
-      <div className="flex justify-center items-center gap-8 mb-8">
-        <img
-          src={logo}
-          alt="Bun Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#646cffaa] scale-120"
-        />
-        <img
-          src={reactLogo}
-          alt="React Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#61dafbaa] [animation:spin_20s_linear_infinite]"
-        />
-      </div>
-      <Card>
-        <CardHeader className="gap-4">
-          <CardTitle className="text-3xl font-bold">Bun + React</CardTitle>
-          <CardDescription>
-            Edit{" "}
-            <code className="rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono">
-              src/App.tsx
-            </code>{" "}
-            and save to test HMR
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <APITester />
-        </CardContent>
-      </Card>
-    </div>
+    <main className="mx-auto w-full max-w-6xl px-5 py-10 md:px-10 md:py-14">
+      <header className="mb-9 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-700">SOAP / Calculadora</p>
+          <h1 className="text-3xl font-semibold text-foreground md:text-4xl">Operações</h1>
+        </div>
+        {soapUrl && <a className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground" href={`${soapUrl}?wsdl`} target="_blank" rel="noreferrer">WSDL ↗</a>}
+      </header>
+      <APITester />
+    </main>
   );
 }
 
