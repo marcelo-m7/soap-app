@@ -11,7 +11,7 @@ Projeto de calculadora com serviço SOAP 1.1 em Bun e cliente web em React. O cl
 
 ## Como executar
 
-É necessário ter [Bun](https://bun.com/) instalado. Em dois terminais, a partir da raiz do projeto:
+Para executar sem Docker, é necessário ter [Bun](https://bun.com/) instalado. Em dois terminais, a partir da raiz do projeto:
 
 **Terminal 1 - serviço SOAP**
 
@@ -30,6 +30,16 @@ bun dev
 ```
 
 Abra **http://localhost:3001/**. O serviço escuta em `http://localhost:3000/wsdl` e publica seu contrato em **http://localhost:3000/wsdl?wsdl**.
+
+### Com Docker
+
+Com Docker e Docker Compose instalados, execute na raiz do projeto:
+
+```bash
+docker compose up --build
+```
+
+Abra **http://localhost:3001/**. Para encerrar, execute `docker compose down`. As portas 3000 e 3001 precisam estar livres; pare os servidores Bun locais antes de subir o Compose. O [Dockerfile](Dockerfile) possui alvos separados para o serviço e a aplicação, definidos em [compose.yaml](compose.yaml). A URL SOAP configurada na aplicação usa `localhost` porque é acessada pelo **navegador** no host, não por uma chamada entre contêineres.
 
 ## Operações e validação
 
