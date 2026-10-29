@@ -33,6 +33,14 @@ A solução implementada cobre as quatro operações e oferece duas formas de as
 \section{Tecnologias e organização}
 O serviço está em TypeScript e usa \texttt{node:http} para criar o servidor HTTP, \texttt{node:fs} para ler o contrato e a biblioteca npm \texttt{soap} (versão 1.14.0) para publicar as operações. O ambiente de execução usado é Bun 1.4.4, compatível com as APIs de Node.js utilizadas; portanto, não se afirma que o processo esteja a correr no binário \texttt{node}. A interface usa React e \texttt{fetch} para criar e enviar XML SOAP 1.1 diretamente a partir do navegador.
 
+\subsection{Porquê Bun}
+Optei por Bun pela rapidez procurada na instalação de dependências e na execução das tarefas de desenvolvimento, em comparação com o fluxo habitual de \texttt{npm} mais ferramentas separadas. Não foi realizado um benchmark neste projeto, pelo que a escolha expressa uma preferência de desenvolvimento, não uma medição de desempenho deste serviço. Bun reúne num só ambiente o gestor de pacotes (\texttt{bun install}), a execução de TypeScript (\texttt{bun src/index.ts}), o executor de testes (\texttt{bun test}) e a construção do frontend (\texttt{bun run build.ts}). \texttt{npm} é um gestor de pacotes, enquanto Bun também é um runtime; a comparação de velocidade refere-se sobretudo ao fluxo de instalação e ferramentas, não a uma comparação direta entre dois runtimes. As dependências continuam a ser pacotes do ecossistema npm, como \texttt{soap} e \texttt{react}.
+
+\subsection{Separação entre frontend e backend}
+Preferi manter o servidor SOAP e o cliente React em aplicações distintas para tornar visível a fronteira HTTP. O navegador, servido na porta 3001, consulta a configuração em \texttt{/api/config} e faz o \texttt{POST} diretamente ao serviço na porta 3000, sem proxy das chamadas SOAP. Assim, é possível observar o método, a URL e os cabeçalhos do pedido (\texttt{Content-Type} e \texttt{SOAPAction}) e o estado, os cabeçalhos acessíveis e o XML da resposta, além de demonstrar a configuração de CORS exigida por origens diferentes.
+
+O navegador envia o cabeçalho \texttt{Origin} e pode iniciar uma requisição preliminar \texttt{OPTIONS} (preflight). Para a origem autorizada, o backend responde com \texttt{Access-Control-Allow-Origin}, \texttt{Access-Control-Allow-Methods} e \texttt{Access-Control-Allow-Headers}; este último inclui \texttt{Content-Type} e \texttt{SOAPAction}. O cabeçalho \texttt{Vary: Origin} distingue respostas de origens diferentes em caches. Esta separação permite explicar por que a política CORS é necessária para o navegador, enquanto o SoapUI, como cliente fora do browser, não depende dessa política.
+
 \begin{center}
 \small
 \begin{tabular}{|p{3.4cm}|p{10cm}|}
@@ -120,6 +128,8 @@ As capturas da Figura~\ref{fig:web-soma} e da Figura~\ref{fig:web-fault} mostram
 \clearpage
 \section{Clientes e demonstração no SoapUI}
 No cliente web, o formulário recebe a operação e dois números. Antes da chamada, recusa entradas vazias e não finitas; \texttt{service.ts} obtém a URL de \texttt{/api/config}, monta o envelope SOAP e envia-o por \texttt{fetch}. O XML da resposta é analisado com \texttt{DOMParser}; o cliente procura um \texttt{Fault} no \texttt{Body} ou um elemento \texttt{OperationResponse} com \texttt{result}. São conservados o pedido, a resposta, o resultado e eventuais mensagens de erro, para que o ecrã mostre o tráfego e não apenas o número calculado.
+
+O frontend usa React 19 para gerir o estado do formulário, do resultado e da troca HTTP/SOAP. Os controlos visuais seguem o padrão \textit{shadcn/ui}: o ficheiro \texttt{components.json} configura o estilo e os componentes \texttt{Button}, \texttt{Input}, \texttt{Label} e \texttt{Select} estão no código da aplicação, em \path{soap-app/src/components/ui/}. Shadcn/ui não é, neste caso, uma biblioteca de componentes importada como dependência única em tempo de execução; é uma coleção de componentes copiáveis e personalizáveis, construída com Tailwind CSS e, em alguns controlos, primitivas Radix UI. Os ícones são fornecidos por \texttt{lucide-react}. A lógica SOAP permanece separada destes componentes de interface.
 
 O SoapUI 5.9.1 está acessível como aplicação gráfica num desktop XFCE remoto em \url{https://localhost:8080/} (certificado local autoassinado). O projeto \texttt{Calculadora SOAP} foi importado a partir de \url{http://soap-server:3000/wsdl?wsdl} e guardado no volume persistente \texttt{soapui-config}, no ficheiro \texttt{/config/Calculadora-SOAP-soapui-project.xml}. Contém uma requisição de exemplo por operação, com valores válidos e endpoint \url{http://soap-server:3000/wsdl}.
 
