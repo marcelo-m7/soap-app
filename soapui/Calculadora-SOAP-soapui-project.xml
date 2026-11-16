@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="e1ef602c-67f9-4415-bfc0-5e7ac5d9a92f" activeEnvironment="Default" name="Calculadora SOAP" soapui-version="5.9.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="b2caf103-d9e8-4343-bfef-d49a6f7dfa61" wsaVersion="NONE" name="CalculatorBinding" type="wsdl" bindingName="{http://example.org}CalculatorBinding" soapVersion="1_1" anonymous="optional" definition="http://soap-server:3000/wsdl?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://soap-server:3000/wsdl?wsdl"><con:part><con:url>http://soap-server:3000/wsdl?wsdl</con:url><con:content><![CDATA[<definitions name="CalculatorService" targetNamespace="http://example.org" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://example.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <message name="AddRequest">
+    <part name="a" type="xsd:double"/>
+    <part name="b" type="xsd:double"/>
+  </message>
+  <message name="AddResponse">
+    <part name="result" type="xsd:double"/>
+  </message>
+  <message name="SubtractRequest">
+    <part name="a" type="xsd:double"/>
+    <part name="b" type="xsd:double"/>
+  </message>
+  <message name="SubtractResponse">
+    <part name="result" type="xsd:double"/>
+  </message>
+  <message name="MultiplyRequest">
+    <part name="a" type="xsd:double"/>
+    <part name="b" type="xsd:double"/>
+  </message>
+  <message name="MultiplyResponse">
+    <part name="result" type="xsd:double"/>
+  </message>
+  <message name="DivideRequest">
+    <part name="a" type="xsd:double"/>
+    <part name="b" type="xsd:double"/>
+  </message>
+  <message name="DivideResponse">
+    <part name="result" type="xsd:double"/>
+  </message>
+  <portType name="CalculatorPortType">
+    <operation name="Add">
+      <input message="tns:AddRequest"/>
+      <output message="tns:AddResponse"/>
+    </operation>
+    <operation name="Subtract">
+      <input message="tns:SubtractRequest"/>
+      <output message="tns:SubtractResponse"/>
+    </operation>
+    <operation name="Multiply">
+      <input message="tns:MultiplyRequest"/>
+      <output message="tns:MultiplyResponse"/>
+    </operation>
+    <operation name="Divide">
+      <input message="tns:DivideRequest"/>
+      <output message="tns:DivideResponse"/>
+    </operation>
+  </portType>
+  <binding name="CalculatorBinding" type="tns:CalculatorPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="Add">
+      <soap:operation soapAction="Add"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="Subtract">
+      <soap:operation soapAction="Subtract"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="Multiply">
+      <soap:operation soapAction="Multiply"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="Divide">
+      <soap:operation soapAction="Divide"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CalculatorService">
+    <port name="CalculatorPort" binding="tns:CalculatorBinding">
+      <soap:address location="http://localhost:3000/wsdl"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://soap-server:3000/wsdl</con:endpoint></con:endpoints><con:operation id="136c8cf7-9f2a-4430-ad6e-aedb7733d4a9" isOneWay="false" action="Add" name="Add" bindingOperationName="Add" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="66eeff28-7e86-4e7b-9a77-e86fef0e6f37" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://soap-server:3000/wsdl</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ex="http://example.org"><soapenv:Header/><soapenv:Body><ex:Add><a>2</a><b>3</b></ex:Add></soapenv:Body></soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="Add"/></con:call></con:operation><con:operation id="079591c5-abe7-45b0-ba47-3eff1588a1d0" isOneWay="false" action="Divide" name="Divide" bindingOperationName="Divide" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="d946f052-4809-4c51-bb82-fa377c8c3d0f" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://soap-server:3000/wsdl</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ex="http://example.org"><soapenv:Header/><soapenv:Body><ex:Divide><a>8</a><b>2</b></ex:Divide></soapenv:Body></soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="Divide"/></con:call></con:operation><con:operation id="92023350-8653-44d9-bcf6-260b23b11785" isOneWay="false" action="Multiply" name="Multiply" bindingOperationName="Multiply" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="027c4920-ce5b-41aa-854f-56a7ac9da680" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://soap-server:3000/wsdl</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ex="http://example.org"><soapenv:Header/><soapenv:Body><ex:Multiply><a>6</a><b>7</b></ex:Multiply></soapenv:Body></soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="Multiply"/></con:call></con:operation><con:operation id="579445b1-1a40-4689-9529-27e917f45b0d" isOneWay="false" action="Subtract" name="Subtract" bindingOperationName="Subtract" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="58aa07b5-d7de-4f94-bb60-590ad9fd63b3" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://soap-server:3000/wsdl</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ex="http://example.org"><soapenv:Header/><soapenv:Body><ex:Subtract><a>9</a><b>4</b></ex:Subtract></soapenv:Body></soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="Subtract"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

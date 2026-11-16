@@ -34,6 +34,8 @@ RUN curl -fsSL https://download2.gluonhq.com/openjfx/17.0.21/openjfx-17.0.21_lin
 	&& cp /opt/javafx-sdk-17.0.21/lib/*.jar /opt/SoapUI-5.9.1/lib/ \
 	&& cp /opt/javafx-sdk-17.0.21/lib/*.so /opt/SoapUI-5.9.1/bin/ \
 	&& rm /tmp/openjfx.zip
-COPY soapui/ /etc/xdg/autostart/
+COPY soapui/soapui.desktop /etc/xdg/autostart/
+COPY soapui/Calculadora-SOAP-soapui-project.xml /defaults/soapui/
+COPY --chmod=755 soapui/init-project.sh /custom-cont-init.d/10-soapui-project
 
 EXPOSE 3001
