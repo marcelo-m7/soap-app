@@ -8,7 +8,7 @@ Projeto de calculadora com serviço SOAP 1.1 em Bun e cliente web em React. O cl
 
 - [`soap-server/`](soap-server/): serviço SOAP, contrato WSDL, validação e CORS.
 - [`soap-app/`](soap-app/): interface para executar operações e inspecionar o tráfego HTTP/SOAP.
-- [`soapui/`](soapui/): configuração de inicialização automática do SoapUI no desktop remoto.
+- [`soapui/`](soapui/): projeto de exemplo e configuração de inicialização automática do SoapUI no desktop remoto.
 
 ## Como executar
 
@@ -42,7 +42,9 @@ docker compose up --build
 
 Abra **http://localhost:3001/**. Para encerrar, execute `docker compose down`. As portas 3000, 3001 e 8080 precisam estar livres; pare os servidores Bun locais antes de subir o Compose. O [Dockerfile](Dockerfile) possui alvos separados para o serviço, a aplicação e o SoapUI, definidos em [compose.yaml](compose.yaml). A URL SOAP configurada na aplicação usa `localhost` porque é acessada pelo **navegador** no host, não por uma chamada entre contêineres.
 
-O SoapUI 5.9.1 portátil abre em **https://localhost:8080/** como desktop remoto. Aceite o certificado autassinado no navegador. Os projetos e as preferências ficam no volume `soapui-config`. No SoapUI, importe `http://soap-server:3000/wsdl?wsdl` e ajuste o endpoint das requisições para `http://soap-server:3000/wsdl`: o endereço `localhost` anunciado pelo WSDL se refere ao contêiner do SoapUI quando usado dentro dele. A porta 8080 está restrita ao host local; não exponha o desktop à internet sem autenticação e proteção adicionais.
+O SoapUI 5.9.1 portátil abre em **https://localhost:8080/** como desktop remoto. Aceite o certificado autassinado no navegador. Os projetos e as preferências ficam no volume `soapui-config`. Na inicialização, o projeto de exemplo [`Calculadora SOAP`](soapui/Calculadora-SOAP-soapui-project.xml) é copiado para `/config/Calculadora-SOAP-soapui-project.xml` apenas se ainda não existir, preservando alterações guardadas. O SoapUI abre esse projeto automaticamente, com uma requisição por operação e endpoint `http://soap-server:3000/wsdl`.
+
+Para importar o contrato manualmente, use `http://soap-server:3000/wsdl?wsdl` e ajuste o endpoint das requisições para `http://soap-server:3000/wsdl`: o endereço `localhost` anunciado pelo WSDL se refere ao contêiner do SoapUI quando usado dentro dele. A porta 8080 está restrita ao host local; não exponha o desktop à internet sem autenticação e proteção adicionais.
 
 ## Operações e validação
 
