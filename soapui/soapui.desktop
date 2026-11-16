@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=SoapUI
+Exec=/opt/SoapUI-5.9.1/bin/soapui.sh
+Path=/opt/SoapUI-5.9.1/bin
+Terminal=false

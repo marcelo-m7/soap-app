@@ -8,6 +8,7 @@ Projeto de calculadora com serviço SOAP 1.1 em Bun e cliente web em React. O cl
 
 - [`soap-server/`](soap-server/): serviço SOAP, contrato WSDL, validação e CORS.
 - [`soap-app/`](soap-app/): interface para executar operações e inspecionar o tráfego HTTP/SOAP.
+- [`soapui/`](soapui/): configuração de inicialização automática do SoapUI no desktop remoto.
 
 ## Como executar
 
